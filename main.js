@@ -35,6 +35,13 @@ for (let i = 0; i <= segments; i++) {
   pathPoints.push(new THREE.Vector3(x, 0, z));
 }
 
+const pathGeometry = new THREE.BufferGeometry().setFromPoints(pathPoints);
+const pathMaterial = new THREE.LineBasicMaterial({
+  color: "rgb(255, 255, 255)",
+});
+const path = new THREE.Line(pathGeometry, pathMaterial);
+scene.add(path);
+
 const mercuryGeometry = new THREE.SphereGeometry(1, 32, 32);
 const mercuryTexture = new THREE.TextureLoader().load("mercury.jpeg");
 const mercuryMaterial = new THREE.MeshBasicMaterial({ map: mercuryTexture });
@@ -43,6 +50,18 @@ const mercury = new THREE.Mesh(mercuryGeometry, mercuryMaterial);
 scene.add(mercury);
 planets.push(mercury);
 mercury.name = "mercury";
+
+mercury.position.x = 18;
+
+const mercuryPathPoints = [];
+const mercuryRadius = 18;
+const mercurySegments = 100;
+for (let i = 0; i <= mercurySegments; i++) {
+  const theta = (i / mercurySegments) * Math.PI * 2;
+  const x = mercuryRadius * Math.cos(theta);
+  const z = mercuryRadius * Math.sin(theta);
+  mercuryPathPoints.push(new THREE.Vector3(x, 0, z));
+}
 
 const mercuryPathGeometry = new THREE.BufferGeometry().setFromPoints(
   mercuryPathPoints
@@ -131,3 +150,5 @@ for (let i = 0; i < numAsteroids; i++) {
 
   scene.add(asteroid);
 }
+
+let focused_object = null;
