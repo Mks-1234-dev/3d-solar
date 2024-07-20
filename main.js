@@ -23,6 +23,18 @@ scene.add(earth);
 planets.push(earth);
 earth.name = "earth";
 
+earth.position.x = 40;
+
+const pathPoints = [];
+const radius = 40;
+const segments = 100;
+for (let i = 0; i <= segments; i++) {
+  const theta = (i / segments) * Math.PI * 2;
+  const x = radius * Math.cos(theta);
+  const z = radius * Math.sin(theta);
+  pathPoints.push(new THREE.Vector3(x, 0, z));
+}
+
 const mercuryGeometry = new THREE.SphereGeometry(1, 32, 32);
 const mercuryTexture = new THREE.TextureLoader().load("mercury.jpeg");
 const mercuryMaterial = new THREE.MeshBasicMaterial({ map: mercuryTexture });
@@ -108,3 +120,14 @@ const asteroids = [];
 const minRadius = 70;
 const maxRadius = 80;
 const beltRadius = [];
+
+for (let i = 0; i < numAsteroids; i++) {
+  const asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
+  asteroids.push(asteroid);
+
+  const angle = Math.random() * Math.PI * 5;
+  const radius = Math.random() * (maxRadius - minRadius) + minRadius; // Random radius between minRadius and maxRadius
+  beltRadius.push(radius);
+
+  scene.add(asteroid);
+}
