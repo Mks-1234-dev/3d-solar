@@ -58,3 +58,53 @@ const mars = new THREE.Mesh(marsGeometry, marsMaterial);
 scene.add(mars);
 planets.push(mars);
 mars.name = "mars";
+
+const jupiterGeometry = new THREE.SphereGeometry(5, 32, 32);
+const jupiterTexture = new THREE.TextureLoader().load("jupiter.jpeg");
+const jupiterMaterial = new THREE.MeshBasicMaterial({ map: jupiterTexture });
+const jupiter = new THREE.Mesh(jupiterGeometry, jupiterMaterial);
+
+scene.add(jupiter);
+
+planets.push(jupiter);
+jupiter.name = "jupiter";
+
+const saturnGeometry = new THREE.SphereGeometry(5, 32, 32);
+const saturnTexture = new THREE.TextureLoader().load("saturn.jpeg");
+const saturnMaterial = new THREE.MeshBasicMaterial({ map: saturnTexture });
+const saturn = new THREE.Mesh(saturnGeometry, saturnMaterial);
+
+scene.add(saturn);
+planets.push(saturn);
+saturn.name = "saturn";
+
+const uranusGeometry = new THREE.SphereGeometry(3.5, 32, 32);
+const uranusTexture = new THREE.TextureLoader().load("uranus.jpeg");
+const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture });
+
+const uranus = new THREE.Mesh(uranusGeometry, uranusMaterial);
+scene.add(uranus);
+
+planets.push(uranus);
+uranus.name = "uranus";
+
+const neptuneGeometry = new THREE.SphereGeometry(3.5, 32, 32);
+const neptuneTexture = new THREE.TextureLoader().load("neptune.jpeg");
+const neptuneMaterial = new THREE.MeshBasicMaterial({ map: neptuneTexture });
+
+const neptune = new THREE.Mesh(neptuneGeometry, neptuneMaterial);
+scene.add(neptune);
+
+planets.push(neptune);
+neptune.name = "neptune";
+
+const asteroidGeometry = new THREE.SphereGeometry(0.2, 10, 10);
+const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
+
+const numAsteroids = 1000;
+const asteroidBeltRadius = 70;
+const asteroids = [];
+
+const minRadius = 70;
+const maxRadius = 80;
+const beltRadius = [];
