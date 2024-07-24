@@ -355,4 +355,25 @@ const animate = () => {
   } else {
     camera.lookAt(scene.position);
   }
-};
+
+  renderer.render(scene, camera);
+}
+animate();
+	
+renderer.render(scene, camera);
+}
+animate();
+
+renderer.domElement.addEventListener('click', onMouseClick, false);
+
+function onMouseClick(event) {
+	console.log('mouse click');
+  // Calculate mouse position in normalized device coordinates
+  const mouse = new THREE.Vector2();
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Cast a ray from the mouse position
+  const raycaster = new THREE.Raycaster();
+  raycaster.setFromCamera(mouse, camera);
+
