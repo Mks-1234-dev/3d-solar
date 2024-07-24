@@ -273,3 +273,59 @@ for (let i = 0; i < numAsteroids; i++) {
 }
 
 let focused_object = null;
+
+for (let i = 0; i < numAsteroids; i++) {
+  const asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
+  asteroids.push(asteroid);
+
+  const angle = Math.random() * Math.PI * 5;
+  const radius = Math.random() * (maxRadius - minRadius) + minRadius; // Random radius between minRadius and maxRadius
+  beltRadius.push(radius);
+  const x = Math.cos(angle) * radius;
+  const z = Math.sin(angle) * asteroidBeltRadius;
+  const y = Math.random() * 2 - 1;
+
+  asteroid.position.set(x, y, z);
+
+  scene.add(asteroid);
+}
+
+let focused_object = null;
+
+const animate = () => {
+  requestAnimationFrame(animate);
+
+  sun.rotation.y += 0.005;
+
+  earth.rotation.y += 0.01;
+  earth.position.x = 40 * Math.cos(Date.now() * 0.0004);
+  earth.position.z = 40 * Math.sin(Date.now() * 0.0004);
+
+  venus.rotation.y += 0.01;
+  venus.position.x = 30 * Math.cos(Date.now() * 0.0006);
+  venus.position.z = 30 * Math.sin(Date.now() * 0.0006);
+
+  mercury.rotation.y += 0.004;
+  mercury.position.x = 18 * Math.cos(Date.now() * 0.002);
+  mercury.position.z = 18 * Math.sin(Date.now() * 0.002);
+
+  mars.rotation.y += 0.004;
+  mars.position.x = 50 * Math.cos(Date.now() * 0.0008);
+  mars.position.z = 50 * Math.sin(Date.now() * 0.0008);
+
+  jupiter.rotation.y += 0.07;
+  jupiter.position.x = 100 * Math.cos(Date.now() * 0.00005);
+  jupiter.position.z = 100 * Math.sin(Date.now() * 0.00005);
+
+  saturn.rotation.y += 0.07;
+  saturn.position.x = 150 * Math.cos(Date.now() * 0.00002);
+  saturn.position.z = 150 * Math.sin(Date.now() * 0.00002);
+
+  uranus.rotation.y += 0.07;
+  uranus.position.x = 180 * Math.cos(Date.now() * 0.00001);
+  uranus.position.z = 180 * Math.sin(Date.now() * 0.00001);
+
+  neptune.rotation.y += 0.07;
+  neptune.position.x = 200 * Math.cos(Date.now() * 0.000005);
+  neptune.position.z = 200 * Math.sin(Date.now() * 0.000005);
+};
