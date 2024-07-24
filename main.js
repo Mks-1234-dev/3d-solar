@@ -446,3 +446,38 @@ renderer.domElement.addEventListener('mousedown', onMouseDown);
 renderer.domElement.addEventListener('mousemove', onMouseMove);
 renderer.domElement.addEventListener('mouseup', onMouseUp);
 renderer.domElement.addEventListener('wheel', onMouseWheel);
+
+
+function onMouseDown(event) {
+  isDragging = true;
+  previousMousePosition = {
+    x: event.clientX,
+    y: event.clientY
+  };
+}
+
+function onMouseMove(event) {
+  if (!isDragging) return;
+
+  const deltaMove = {
+    x: event.clientX - previousMousePosition.x,
+    y: event.clientY - previousMousePosition.y
+  };
+
+  const rotationSpeed = 0.1;
+  const rotation = new THREE.Euler(
+    toRadians(deltaMove.y * -rotationSpeed),
+    toRadians(deltaMove.x * -rotationSpeed),
+    0,
+    'XYZ'
+  );
+  const quaternion = new THREE.Quaternion().setFromEuler(rotation);
+
+  camera.position.applyQuaternion(quaternion);
+  //camera.lookAt(scene.position);
+
+  previousMousePosition = {
+    x: event.clientX,
+    y: event.clientY
+  };
+}
