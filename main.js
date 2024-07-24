@@ -377,3 +377,56 @@ function onMouseClick(event) {
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
+
+
+
+  // Check for intersections with the objects in the scene
+  const intersects = raycaster.intersectObjects(scene.children, true);
+
+  if (intersects.length > 0) {
+		console.log('intersected');
+    // An object was clicked
+    const clickedObject = intersects[0].object;
+		console.log(clickedObject.name);
+
+    // Check the identifier of the clicked object and execute the corresponding function
+    switch (clickedObject.name) {
+      case 'sun':
+				console.log('sun')
+        focused_object = sun;
+        break;
+      case 'earth':
+				console.log('earth')
+        focused_object = earth;
+				break;
+			case 'venus':
+				console.log('venus')
+        focused_object = venus;
+				break;
+			case 'mercury':
+				console.log('mercury')
+        focused_object = mercury;
+				break;
+			case 'mars':
+				console.log('mars')
+        focused_object = mars;
+				break;
+			case 'jupiter':
+				console.log('jupiter')
+        focused_object = jupiter;
+				break;
+			case 'saturn':
+				console.log('saturn')
+        focused_object = saturn;
+				break;
+			case 'uranus':
+				console.log('uranus')
+        focused_object = uranus;
+				break;
+			case 'neptune':
+				console.log('neptune')
+        focused_object = neptune;
+				break;
+    }
+  }
+}
