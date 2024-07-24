@@ -328,4 +328,31 @@ const animate = () => {
   neptune.rotation.y += 0.07;
   neptune.position.x = 200 * Math.cos(Date.now() * 0.000005);
   neptune.position.z = 200 * Math.sin(Date.now() * 0.000005);
+  for (let i = 0; i < asteroids.length; i++) {
+    const asteroid = asteroids[i];
+
+    asteroid.rotation.y += 0.01;
+
+    const radius = Math.random() * (maxRadius - minRadius) + minRadius;
+
+    const angle =
+      (i / asteroids.length) * Math.PI * 2 +
+      (Date.now() * 0.0000001 * i * beltRadius[i]) / 100;
+
+    const x = Math.cos(angle) * beltRadius[i];
+    const z = Math.sin(angle) * beltRadius[i];
+
+    asteroid.position.set(x, asteroid.position.y, z);
+  }
+
+  if (focused_object != null) {
+    camera.lookAt(focused_object.position);
+    camera.position.set(
+      focused_object.position.x,
+      focused_object.position.y + 10,
+      focused_object.position.z - 30
+    );
+  } else {
+    camera.lookAt(scene.position);
+  }
 };
