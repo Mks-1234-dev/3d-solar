@@ -81,6 +81,18 @@ scene.add(venus);
 planets.push(venus);
 venus.name = "venus";
 
+venus.position.x = 30;
+
+const venusPathPoints = [];
+const venusRadius = 30;
+const venusSegments = 100;
+for (let i = 0; i <= venusSegments; i++) {
+  const theta = (i / venusSegments) * Math.PI * 2;
+  const x = venusRadius * Math.cos(theta);
+  const z = venusRadius * Math.sin(theta);
+  venusPathPoints.push(new THREE.Vector3(x, 0, z));
+}
+
 const marsGeometry = new THREE.SphereGeometry(1.8, 32, 32);
 const marsTexture = new THREE.TextureLoader().load("mars.jpeg");
 const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
@@ -89,6 +101,18 @@ const mars = new THREE.Mesh(marsGeometry, marsMaterial);
 scene.add(mars);
 planets.push(mars);
 mars.name = "mars";
+
+mars.position.x = 50;
+
+const marsPathPoints = [];
+const marsRadius = 50;
+const marsSegments = 100;
+for (let i = 0; i <= marsSegments; i++) {
+  const theta = (i / marsSegments) * Math.PI * 2;
+  const x = marsRadius * Math.cos(theta);
+  const z = marsRadius * Math.sin(theta);
+  marsPathPoints.push(new THREE.Vector3(x, 0, z));
+}
 
 const jupiterGeometry = new THREE.SphereGeometry(5, 32, 32);
 const jupiterTexture = new THREE.TextureLoader().load("jupiter.jpeg");
@@ -99,6 +123,27 @@ scene.add(jupiter);
 
 planets.push(jupiter);
 jupiter.name = "jupiter";
+
+jupiter.position.x = 100;
+
+const jupiterPathPoints = [];
+const jupiterRadius = 100;
+const jupiterSegments = 100;
+for (let i = 0; i <= jupiterSegments; i++) {
+  const theta = (i / jupiterSegments) * Math.PI * 2;
+  const x = jupiterRadius * Math.cos(theta);
+  const z = jupiterRadius * Math.sin(theta);
+  jupiterPathPoints.push(new THREE.Vector3(x, 0, z));
+}
+const jupiterPathGeometry = new THREE.BufferGeometry().setFromPoints(
+  jupiterPathPoints
+);
+const jupiterPathMaterial = new THREE.LineBasicMaterial({
+  color: "rgb(255, 255, 255)",
+});
+const jupiterPath = new THREE.Line(jupiterPathGeometry, jupiterPathMaterial);
+
+scene.add(jupiterPath);
 
 const saturnGeometry = new THREE.SphereGeometry(5, 32, 32);
 const saturnTexture = new THREE.TextureLoader().load("saturn.jpeg");
