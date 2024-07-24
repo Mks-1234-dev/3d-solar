@@ -430,3 +430,19 @@ function onMouseClick(event) {
     }
   }
 }
+
+
+camera.position.set(0, 30, 100);
+camera.rotation.set(-Math.PI / 6, 0, 0);
+camera.lookAt(scene.position);
+
+let isDragging = false;
+let previousMousePosition = {
+  x: 0,
+  y: 0
+};
+
+renderer.domElement.addEventListener('mousedown', onMouseDown);
+renderer.domElement.addEventListener('mousemove', onMouseMove);
+renderer.domElement.addEventListener('mouseup', onMouseUp);
+renderer.domElement.addEventListener('wheel', onMouseWheel);
