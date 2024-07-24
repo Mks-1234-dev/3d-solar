@@ -154,6 +154,38 @@ scene.add(saturn);
 planets.push(saturn);
 saturn.name = "saturn";
 
+saturn.position.x = 150;
+
+const saturnPathPoints = [];
+const saturnRadius = 150;
+const saturnSegments = 100;
+for (let i = 0; i <= saturnSegments; i++) {
+  const theta = (i / saturnSegments) * Math.PI * 2;
+  const x = saturnRadius * Math.cos(theta);
+  const z = saturnRadius * Math.sin(theta);
+  saturnPathPoints.push(new THREE.Vector3(x, 0, z));
+}
+const saturnPathGeometry = new THREE.BufferGeometry().setFromPoints(
+  saturnPathPoints
+);
+const saturnPathMaterial = new THREE.LineBasicMaterial({
+  color: "rgb(255, 255, 255)",
+});
+const saturnPath = new THREE.Line(saturnPathGeometry, saturnPathMaterial);
+scene.add(saturnPath);
+
+const saturnRingsGeometry = new THREE.RingGeometry(6, 10, 64);
+const saturnRingsTexture = new THREE.TextureLoader().load("saturn-ring.jpeg");
+const saturnRingsMaterial = new THREE.MeshBasicMaterial({
+  map: saturnRingsTexture,
+  side: THREE.DoubleSide,
+  transparent: true,
+});
+const saturnRings = new THREE.Mesh(saturnRingsGeometry, saturnRingsMaterial);
+saturn.add(saturnRings);
+
+saturnRings.rotation.x = Math.PI / 2;
+
 const uranusGeometry = new THREE.SphereGeometry(3.5, 32, 32);
 const uranusTexture = new THREE.TextureLoader().load("uranus.jpeg");
 const uranusMaterial = new THREE.MeshBasicMaterial({ map: uranusTexture });
@@ -163,6 +195,26 @@ scene.add(uranus);
 
 planets.push(uranus);
 uranus.name = "uranus";
+
+uranus.position.x = 180;
+
+const uranusPathPoints = [];
+const uranusRadius = 180;
+const uranusSegments = 100;
+for (let i = 0; i <= uranusSegments; i++) {
+  const theta = (i / uranusSegments) * Math.PI * 2;
+  const x = uranusRadius * Math.cos(theta);
+  const z = uranusRadius * Math.sin(theta);
+  uranusPathPoints.push(new THREE.Vector3(x, 0, z));
+}
+const uranusPathGeometry = new THREE.BufferGeometry().setFromPoints(
+  uranusPathPoints
+);
+const uranusPathMaterial = new THREE.LineBasicMaterial({
+  color: "rgb(255, 255, 255)",
+});
+const uranusPath = new THREE.Line(uranusPathGeometry, uranusPathMaterial);
+scene.add(uranusPath);
 
 const neptuneGeometry = new THREE.SphereGeometry(3.5, 32, 32);
 const neptuneTexture = new THREE.TextureLoader().load("neptune.jpeg");
@@ -174,6 +226,26 @@ scene.add(neptune);
 planets.push(neptune);
 neptune.name = "neptune";
 
+neptune.position.x = 200;
+
+const neptunePathPoints = [];
+const neptuneRadius = 200;
+const neptuneSegments = 100;
+for (let i = 0; i <= neptuneSegments; i++) {
+  const theta = (i / neptuneSegments) * Math.PI * 2;
+  const x = neptuneRadius * Math.cos(theta);
+  const z = neptuneRadius * Math.sin(theta);
+  neptunePathPoints.push(new THREE.Vector3(x, 0, z));
+}
+const neptunePathGeometry = new THREE.BufferGeometry().setFromPoints(
+  neptunePathPoints
+);
+const neptunePathMaterial = new THREE.LineBasicMaterial({
+  color: "rgb(255, 255, 255)",
+});
+const neptunePath = new THREE.Line(neptunePathGeometry, neptunePathMaterial);
+scene.add(neptunePath);
+
 const asteroidGeometry = new THREE.SphereGeometry(0.2, 10, 10);
 const asteroidMaterial = new THREE.MeshBasicMaterial({ color: 0x888888 });
 
@@ -184,7 +256,6 @@ const asteroids = [];
 const minRadius = 70;
 const maxRadius = 80;
 const beltRadius = [];
-
 for (let i = 0; i < numAsteroids; i++) {
   const asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
   asteroids.push(asteroid);
@@ -192,6 +263,11 @@ for (let i = 0; i < numAsteroids; i++) {
   const angle = Math.random() * Math.PI * 5;
   const radius = Math.random() * (maxRadius - minRadius) + minRadius; // Random radius between minRadius and maxRadius
   beltRadius.push(radius);
+  const x = Math.cos(angle) * radius;
+  const z = Math.sin(angle) * asteroidBeltRadius;
+  const y = Math.random() * 2 - 1;
+
+  asteroid.position.set(x, y, z);
 
   scene.add(asteroid);
 }
