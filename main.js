@@ -1,6 +1,12 @@
 import * as THREE from "three";
 
 const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
 const renderer = new THREE.WebGLRenderer();
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
@@ -14,6 +20,10 @@ const sunMaterial = new THREE.MeshBasicMaterial({ map: sunTexture });
 const sun = new THREE.Mesh(sunGeometry, sunMaterial);
 scene.add(sun);
 sun.name = "sun";
+
+const planets = [];
+
+const earthGeometry = new THREE.SphereGeometry(2, 32, 32);
 
 const earthDayTexture = new THREE.TextureLoader().load("earth.jpeg");
 const earthDayMaterial = new THREE.MeshBasicMaterial({ map: earthDayTexture });
@@ -93,6 +103,15 @@ for (let i = 0; i <= venusSegments; i++) {
   venusPathPoints.push(new THREE.Vector3(x, 0, z));
 }
 
+const venusPathGeometry = new THREE.BufferGeometry().setFromPoints(
+  venusPathPoints
+);
+const venusPathMaterial = new THREE.LineBasicMaterial({
+  color: "rgb(255, 255, 255)",
+});
+const venusPath = new THREE.Line(venusPathGeometry, venusPathMaterial);
+scene.add(venusPath);
+
 const marsGeometry = new THREE.SphereGeometry(1.8, 32, 32);
 const marsTexture = new THREE.TextureLoader().load("mars.jpeg");
 const marsMaterial = new THREE.MeshBasicMaterial({ map: marsTexture });
@@ -113,6 +132,15 @@ for (let i = 0; i <= marsSegments; i++) {
   const z = marsRadius * Math.sin(theta);
   marsPathPoints.push(new THREE.Vector3(x, 0, z));
 }
+
+const marsPathGeometry = new THREE.BufferGeometry().setFromPoints(
+  marsPathPoints
+);
+const marsPathMaterial = new THREE.LineBasicMaterial({
+  color: "rgb(255, 255, 255)",
+});
+const marsPath = new THREE.Line(marsPathGeometry, marsPathMaterial);
+scene.add(marsPath);
 
 const jupiterGeometry = new THREE.SphereGeometry(5, 32, 32);
 const jupiterTexture = new THREE.TextureLoader().load("jupiter.jpeg");
@@ -256,23 +284,6 @@ const asteroids = [];
 const minRadius = 70;
 const maxRadius = 80;
 const beltRadius = [];
-for (let i = 0; i < numAsteroids; i++) {
-  const asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
-  asteroids.push(asteroid);
-
-  const angle = Math.random() * Math.PI * 5;
-  const radius = Math.random() * (maxRadius - minRadius) + minRadius; // Random radius between minRadius and maxRadius
-  beltRadius.push(radius);
-  const x = Math.cos(angle) * radius;
-  const z = Math.sin(angle) * asteroidBeltRadius;
-  const y = Math.random() * 2 - 1;
-
-  asteroid.position.set(x, y, z);
-
-  scene.add(asteroid);
-}
-
-let focused_object = null;
 
 for (let i = 0; i < numAsteroids; i++) {
   const asteroid = new THREE.Mesh(asteroidGeometry, asteroidMaterial);
@@ -328,6 +339,9 @@ const animate = () => {
   neptune.rotation.y += 0.07;
   neptune.position.x = 200 * Math.cos(Date.now() * 0.000005);
   neptune.position.z = 200 * Math.sin(Date.now() * 0.000005);
+
+  //saturnRings.rotation.x += 0.07;
+
   for (let i = 0; i < asteroids.length; i++) {
     const asteroid = asteroids[i];
 
@@ -357,17 +371,13 @@ const animate = () => {
   }
 
   renderer.render(scene, camera);
-}
-animate();
-	
-renderer.render(scene, camera);
-}
+};
 animate();
 
-renderer.domElement.addEventListener('click', onMouseClick, false);
+renderer.domElement.addEventListener("click", onMouseClick, false);
 
 function onMouseClick(event) {
-	console.log('mouse click');
+  console.log("mouse click");
   // Calculate mouse position in normalized device coordinates
   const mouse = new THREE.Vector2();
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -377,60 +387,56 @@ function onMouseClick(event) {
   const raycaster = new THREE.Raycaster();
   raycaster.setFromCamera(mouse, camera);
 
-
-
-
   // Check for intersections with the objects in the scene
   const intersects = raycaster.intersectObjects(scene.children, true);
 
   if (intersects.length > 0) {
-		console.log('intersected');
+    console.log("intersected");
     // An object was clicked
     const clickedObject = intersects[0].object;
-		console.log(clickedObject.name);
+    console.log(clickedObject.name);
 
     // Check the identifier of the clicked object and execute the corresponding function
     switch (clickedObject.name) {
-      case 'sun':
-				console.log('sun')
+      case "sun":
+        console.log("sun");
         focused_object = sun;
         break;
-      case 'earth':
-				console.log('earth')
+      case "earth":
+        console.log("earth");
         focused_object = earth;
-				break;
-			case 'venus':
-				console.log('venus')
+        break;
+      case "venus":
+        console.log("venus");
         focused_object = venus;
-				break;
-			case 'mercury':
-				console.log('mercury')
+        break;
+      case "mercury":
+        console.log("mercury");
         focused_object = mercury;
-				break;
-			case 'mars':
-				console.log('mars')
+        break;
+      case "mars":
+        console.log("mars");
         focused_object = mars;
-				break;
-			case 'jupiter':
-				console.log('jupiter')
+        break;
+      case "jupiter":
+        console.log("jupiter");
         focused_object = jupiter;
-				break;
-			case 'saturn':
-				console.log('saturn')
+        break;
+      case "saturn":
+        console.log("saturn");
         focused_object = saturn;
-				break;
-			case 'uranus':
-				console.log('uranus')
+        break;
+      case "uranus":
+        console.log("uranus");
         focused_object = uranus;
-				break;
-			case 'neptune':
-				console.log('neptune')
+        break;
+      case "neptune":
+        console.log("neptune");
         focused_object = neptune;
-				break;
+        break;
     }
   }
 }
-
 
 camera.position.set(0, 30, 100);
 camera.rotation.set(-Math.PI / 6, 0, 0);
@@ -439,20 +445,19 @@ camera.lookAt(scene.position);
 let isDragging = false;
 let previousMousePosition = {
   x: 0,
-  y: 0
+  y: 0,
 };
 
-renderer.domElement.addEventListener('mousedown', onMouseDown);
-renderer.domElement.addEventListener('mousemove', onMouseMove);
-renderer.domElement.addEventListener('mouseup', onMouseUp);
-renderer.domElement.addEventListener('wheel', onMouseWheel);
-
+renderer.domElement.addEventListener("mousedown", onMouseDown);
+renderer.domElement.addEventListener("mousemove", onMouseMove);
+renderer.domElement.addEventListener("mouseup", onMouseUp);
+renderer.domElement.addEventListener("wheel", onMouseWheel);
 
 function onMouseDown(event) {
   isDragging = true;
   previousMousePosition = {
     x: event.clientX,
-    y: event.clientY
+    y: event.clientY,
   };
 }
 
@@ -461,7 +466,7 @@ function onMouseMove(event) {
 
   const deltaMove = {
     x: event.clientX - previousMousePosition.x,
-    y: event.clientY - previousMousePosition.y
+    y: event.clientY - previousMousePosition.y,
   };
 
   const rotationSpeed = 0.1;
@@ -469,7 +474,7 @@ function onMouseMove(event) {
     toRadians(deltaMove.y * -rotationSpeed),
     toRadians(deltaMove.x * -rotationSpeed),
     0,
-    'XYZ'
+    "XYZ"
   );
   const quaternion = new THREE.Quaternion().setFromEuler(rotation);
 
@@ -478,9 +483,10 @@ function onMouseMove(event) {
 
   previousMousePosition = {
     x: event.clientX,
-    y: event.clientY
+    y: event.clientY,
   };
 }
+
 function onMouseUp() {
   isDragging = false;
 }
@@ -488,31 +494,63 @@ function onMouseUp() {
 function onMouseWheel(event) {
   const zoomSpeed = 0.1;
   const deltaZoom = event.deltaY * zoomSpeed;
-	if (camera.position.z - deltaZoom < 0)
-  camera.position.z = 0;
-	else if (camera.position.z - deltaZoom > 300)
-  camera.position.z = 300;
-	else
-	camera.position.z -= deltaZoom;
-	//camera.lookAt(scene.position);
+  if (camera.position.z - deltaZoom < 0) camera.position.z = 0;
+  else if (camera.position.z - deltaZoom > 300) camera.position.z = 300;
+  else camera.position.z -= deltaZoom;
+  //camera.lookAt(scene.position);
 }
 
 function toRadians(angle) {
   return angle * (Math.PI / 180);
 }
-function reset(event) {
-	camera.position.set(0, 30, 100);
-	camera.rotation.set(-Math.PI / 6, 0, 0);
-	camera.lookAt(scene.position);
-	focused_object = null;
-	console.log('reset');
 
+function reset(event) {
+  camera.position.set(0, 30, 100);
+  camera.rotation.set(-Math.PI / 6, 0, 0);
+  camera.lookAt(scene.position);
+  focused_object = null;
+  console.log("reset");
 }
 
-let button = document.getElementById('reset-btn');
-button.addEventListener('click', reset);
+let button = document.getElementById("reset-btn");
+button.addEventListener("click", reset);
 
-let mercury_btn = document.getElementById('mercury');
-mercury_btn.addEventListener('click', function(event) {
-	focused_object = mercury;
+let mercury_btn = document.getElementById("mercury");
+mercury_btn.addEventListener("click", function (event) {
+  focused_object = mercury;
+});
+
+let venus_btn = document.getElementById("venus");
+venus_btn.addEventListener("click", function (event) {
+  focused_object = venus;
+});
+
+let earth_btn = document.getElementById("earth");
+earth_btn.addEventListener("click", function (event) {
+  focused_object = earth;
+});
+
+let mars_btn = document.getElementById("mars");
+mars_btn.addEventListener("click", function (event) {
+  focused_object = mars;
+});
+
+let jupiter_btn = document.getElementById("jupiter");
+jupiter_btn.addEventListener("click", function (event) {
+  focused_object = jupiter;
+});
+
+let saturn_btn = document.getElementById("saturn");
+saturn_btn.addEventListener("click", function (event) {
+  focused_object = saturn;
+});
+
+let uranus_btn = document.getElementById("uranus");
+uranus_btn.addEventListener("click", function (event) {
+  focused_object = uranus;
+});
+
+let neptune_btn = document.getElementById("neptune");
+neptune_btn.addEventListener("click", function (event) {
+  focused_object = neptune;
 });
