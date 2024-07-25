@@ -481,3 +481,22 @@ function onMouseMove(event) {
     y: event.clientY
   };
 }
+function onMouseUp() {
+  isDragging = false;
+}
+
+function onMouseWheel(event) {
+  const zoomSpeed = 0.1;
+  const deltaZoom = event.deltaY * zoomSpeed;
+	if (camera.position.z - deltaZoom < 0)
+  camera.position.z = 0;
+	else if (camera.position.z - deltaZoom > 300)
+  camera.position.z = 300;
+	else
+	camera.position.z -= deltaZoom;
+	//camera.lookAt(scene.position);
+}
+
+function toRadians(angle) {
+  return angle * (Math.PI / 180);
+}
