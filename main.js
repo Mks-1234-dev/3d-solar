@@ -500,3 +500,19 @@ function onMouseWheel(event) {
 function toRadians(angle) {
   return angle * (Math.PI / 180);
 }
+function reset(event) {
+	camera.position.set(0, 30, 100);
+	camera.rotation.set(-Math.PI / 6, 0, 0);
+	camera.lookAt(scene.position);
+	focused_object = null;
+	console.log('reset');
+
+}
+
+let button = document.getElementById('reset-btn');
+button.addEventListener('click', reset);
+
+let mercury_btn = document.getElementById('mercury');
+mercury_btn.addEventListener('click', function(event) {
+	focused_object = mercury;
+});
